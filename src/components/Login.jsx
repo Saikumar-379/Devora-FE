@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import loginImage from '../assets/devora.png'
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addUser } from '../utils/userSlice'
 import { useNavigate } from 'react-router-dom'
 import { BASEURL } from '../utils/constants'
@@ -9,6 +9,9 @@ import { BASEURL } from '../utils/constants'
 const Login = () => {
 
     const navigate = useNavigate()
+
+    const user = useSelector(store => store.user)
+    if (user) navigate('/')
 
     const [email, setEmail] = useState('test@gmail.com')
     const [password, setPassword] = useState('test@123')
@@ -64,7 +67,7 @@ const Login = () => {
             };
 
             const loginRes = await axios.post(BASEURL + '/api/login', loginData, { withCredentials: true });
-            console.log(loginRes.data);
+            
 
             dispatch(addUser(loginRes.data.data))
 
